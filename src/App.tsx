@@ -20,6 +20,7 @@ export default function App() {
   return (
     <BrowserRouter>
       {isAuthenticated() && <Header />}
+       <div className="min-h-screen overflow-x-clip flex justify-center">
       <Routes>
         <Route path="/favorites" element={<Protected><FavoritesPage /></Protected>} />
         <Route path="/coin/:id" element={<Protected><CoinDetailsPage /></Protected>} />
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/cryptos" element={<Protected><CryptocurrenciesPage /></Protected>} />
         <Route path="/news" element={<Protected><NewsPage /></Protected>} />
       </Routes>
+      </div>
     </BrowserRouter>
   );
 }

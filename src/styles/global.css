@@ -3,30 +3,17 @@
 @tailwind utilities;
 
 @layer base {
+  html, body, #root { height: 100%; }
+  body { min-height: 100%; overflow-x: clip; }
   :root {
-    --bg: #ffffff;
-    --bg-soft: #f7f8fb;
-    --text: #0b0f17;
-  }
-  .dark {
     --bg: #0b0f17;
-    --bg-soft: #0e1320;
     --text: #e6eef8;
   }
-  html, body, #root { height: 100%; }
-  body {
-    background: radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,0.15), transparent 60%),
-                radial-gradient(800px 400px at 10% 10%, rgba(0,212,255,0.12), transparent 60%),
-                var(--bg);
-    color: var(--text);
-  }
-}
+  .light { --bg:#ffffff; --text:#0b0f17; }
+  .dark  { --bg:#0b0f17; --text:#e6eef8; }
 
-@layer components {
-  .container {
-    @apply max-w-6xl mx-auto px-4;
-  }
-  .panel {
-    @apply rounded-2xl border border-white/10 dark:bg-white/5 bg-white;
+  body {
+    background: var(--bg);
+    color: var(--text);
   }
 }
