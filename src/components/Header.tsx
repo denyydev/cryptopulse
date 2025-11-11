@@ -11,6 +11,8 @@ export default function Header() {
           <Link to="/" className="text-white font-semibold">CryptoPulse</Link>
           <Link to="/cryptos" className="text-slate-300 hover:text-white">Cryptos</Link>
           <Link to="/news" className="text-slate-300 hover:text-white">News</Link>
+          <Link to="/nfts" className="text-slate-300 hover:text-white">NFTs</Link>
+
         </nav>
         <div className="flex items-center gap-3">
           <span className="text-slate-300">Hi, {getUsername()}</span>
