@@ -1,4 +1,4 @@
-import { Typography, Empty, Card } from 'antd'
+import { Typography, Card } from 'antd'
 import { useAppStore } from '../store/useAppStore'
 import { useNavigate } from 'react-router-dom'
 import { StarFilled, PictureOutlined } from '@ant-design/icons'
