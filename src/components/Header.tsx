@@ -24,7 +24,7 @@ export default function Header() {
           <Button onClick={() => { logout(); nav('/login') }}>Logout</Button>
         </div>
       </div>
-      <button className="bg-red-700">dsad</button>
+
     </header>
   )
 }
