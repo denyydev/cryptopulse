@@ -1,17 +1,7 @@
-export const loginFake = (username: string, password: string) => {
-  const users: Record<string, string> = { demo: "demo", alice: "123456" };
-  if (users[username] === password) {
-    localStorage.setItem("token", btoa(`${username}:${password}`));
-    localStorage.setItem("username", username);
-    return true;
-  }
-  return false;
-};
+import { useAppStore } from "../store/useAppStore";
 
-export const logout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("username");
-};
-
-export const isAuthenticated = () => !!localStorage.getItem("token");
-export const getUsername = () => localStorage.getItem("username") ?? "guest";
+export const loginFake = (u: string, p: string) =>
+  useAppStore.getState().login(u, p);
+export const logout = () => useAppStore.getState().logout();
+export const isAuthenticated = () => useAppStore.getState().isAuthenticated();
+export const getUsername = () => useAppStore.getState().username ?? "guest";

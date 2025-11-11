@@ -8,6 +8,7 @@ import Header from './components/Header';
 import { isAuthenticated } from './hooks/useAuth';
 import NFTsPage from './pages/NFTsPage';
 import CoinDetailsPage from './pages/CoinDetailsPage';
+import FavoritesPage from './pages/FavoritesPage';
 
 type ProtectedProps = { children: ReactNode };
 
@@ -20,6 +21,7 @@ export default function App() {
     <BrowserRouter>
       {isAuthenticated() && <Header />}
       <Routes>
+        <Route path="/favorites" element={<Protected><FavoritesPage /></Protected>} />
         <Route path="/coin/:id" element={<Protected><CoinDetailsPage /></Protected>} />
         <Route path="/nfts" element={<Protected><NFTsPage /></Protected>} />
         <Route path="/login" element={<LoginPage />} />
