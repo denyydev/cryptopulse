@@ -28,7 +28,6 @@ export default function NewsPage() {
   const [items, setItems] = useState<NewsItemEx[]>([])
   const [loading, setLoading] = useState(true)
 
-
   const [query] = useState('')
   const [period] = useState<Period>('all')
   const [source] = useState<string | 'all'>('all')
@@ -41,17 +40,13 @@ export default function NewsPage() {
       .finally(() => setLoading(false))
   }, [])
 
-
-
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     const arr = items
       .filter(n => withinPeriod(getDateStr(n), period))
       .filter(n => (source === 'all' ? true : getSource(n) === source))
       .filter(n =>
-        !q
-          ? true
-          : [n.title, getDesc(n), getSource(n)].filter(Boolean).some(v => String(v).toLowerCase().includes(q)),
+        !q ? true : [n.title, getDesc(n), getSource(n)].filter(Boolean).some(v => String(v).toLowerCase().includes(q)),
       )
       .slice()
       .sort((a, b) => {

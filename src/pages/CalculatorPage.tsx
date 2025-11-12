@@ -99,7 +99,7 @@ export default function CalculatorPage() {
                 rules={[{ required: true }]}
               >
                 <InputNumber<number>
-                  min={0}
+                  min={0 as number}
                   step={1}
                   className="w-full"
                   formatter={v => (v === undefined ? '' : nfUSD.format(Number(v)))}
@@ -112,7 +112,7 @@ export default function CalculatorPage() {
                 label={<span className="inline-flex items-center gap-2"><TrendingUp className="h-4 w-4" />Цена продажи</span>}
               >
                 <InputNumber<number>
-                  min={0}
+                  min={0 as number}
                   step={1}
                   className="w-full"
                   placeholder="Опционально"
@@ -121,12 +121,8 @@ export default function CalculatorPage() {
                 />
               </Form.Item>
 
-              <Form.Item
-                name="amount"
-                label="Количество"
-                rules={[{ required: true }]}
-              >
-                <InputNumber<number> min={0} step={0.0001} className="w-full" />
+              <Form.Item name="amount" label="Количество" rules={[{ required: true }]}>
+                <InputNumber<number> min={0 as number} step={0.0001} className="w-full" />
               </Form.Item>
 
               <div className="mb-2 flex items-center justify-between">
@@ -153,7 +149,7 @@ export default function CalculatorPage() {
                 rules={[{ required: true }]}
               >
                 <InputNumber<number>
-                  min={0}
+                  min={0 as number}
                   step={0.01}
                   className="w-full"
                   formatter={v => (v === undefined ? '' : `${v}%`)}
