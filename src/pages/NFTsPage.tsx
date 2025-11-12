@@ -19,7 +19,7 @@ export default function NFTsPage() {
     )
 
   return (
-    <div className="p-6">
+    <div className="p-6 w-full">
       <Typography.Title level={2} style={{ color: '#fff' }}>
         NFTs
       </Typography.Title>

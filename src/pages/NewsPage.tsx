@@ -20,7 +20,7 @@ export default function NewsPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6 w-full">
       <Typography.Title level={2} style={{ color: '#fff' }}>
         News
       </Typography.Title>

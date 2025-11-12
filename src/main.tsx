@@ -12,10 +12,11 @@ import ThemeProvider from './app/ThemeProvider';
 import Header from './components/Header';
 import { isAuthenticated } from './hooks/useAuth';
 
+
 export const AuthedLayout: React.FC = () => (
   <>
     <Header />
-    <div className="min-h-screen overflow-x-clip">
+    <div className="min-h-screen overflow-x-clip max-w-[1440px] flex mx-auto">
       <React.Suspense fallback={<div className="p-6">Loading...</div>}>
         <Outlet />
       </React.Suspense>
@@ -45,6 +46,8 @@ const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 const NFTsPage = React.lazy(() => import('./pages/NFTsPage'));
 const CoinDetailsPage = React.lazy(() => import('./pages/CoinDetailsPage'));
 const FavoritesPage = React.lazy(() => import('./pages/FavoritesPage'));
+const CalculatorPage = React.lazy(() => import('./pages/CalculatorPage'));
+const InvestmentSimulatorPage = React.lazy(() => import('./pages/InvestmentSimulatorPage'));
 
 
 const router = createBrowserRouter([
@@ -59,6 +62,8 @@ const router = createBrowserRouter([
       { path: 'nfts', element: <NFTsPage /> },
       { path: 'favorites', element: <FavoritesPage /> },
       { path: 'coin/:id', element: <CoinDetailsPage /> },
+      { path: 'calculator', element: <CalculatorPage /> },
+      { path: 'simulator', element: <InvestmentSimulatorPage /> },
     ],
   },
 

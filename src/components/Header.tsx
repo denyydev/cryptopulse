@@ -3,12 +3,22 @@ import { Button } from 'antd'
 import { useAppStore } from '../store/useAppStore'
 import ThemeToggle from './ThemeToggle'
 import { motion } from 'framer-motion'
+import {
+  Coins,
+  Newspaper,
+  Diamond,
+  Star,
+  Calculator as CalculatorIcon,
+} from 'lucide-react'
 
 const nav = [
-  { to: '/cryptos', label: 'Cryptos' },
-  { to: '/news', label: 'News' },
-  { to: '/nfts', label: 'NFTs' },
-  { to: '/favorites', label: 'Favorites' },
+  { to: '/cryptos', label: 'Cryptos', Icon: Coins },
+  { to: '/news', label: 'News', Icon: Newspaper },
+  { to: '/nfts', label: 'NFTs', Icon: Diamond },
+  { to: '/favorites', label: 'Favorites', Icon: Star },
+  { to: '/calculator', label: 'PNL', Icon: CalculatorIcon },
+    { to: '/Simulator', label: 'Investment', Icon: CalculatorIcon },
+
 ]
 
 export default function Header() {
@@ -18,7 +28,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 overflow-x-clip">
-      <div className="relative mx-auto mt-3 w-full max-w-[1440px] px-4">
+      <div className="relative mx-auto mt-3 w-full max-w-[1440px]">
         <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute left-1/4 top-[-40%] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-fuchsia-500/15 blur-3xl" />
           <div className="absolute left-[80%] top-[-20%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-cyan-400/15 blur-3xl" />
@@ -41,13 +51,13 @@ export default function Header() {
               </NavLink>
 
               <nav className="hidden gap-1 md:flex">
-                {nav.map((item) => (
+                {nav.map(({ to, label, Icon }) => (
                   <NavLink
-                    key={item.to}
-                    to={item.to}
+                    key={to}
+                    to={to}
                     className={({ isActive }) =>
                       [
-                        'relative rounded-full px-3 py-2 text-sm transition',
+                        'group relative flex items-center gap-2 rounded-full px-3 py-2 text-sm transition',
                         'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white',
                         isActive ? 'text-sky-500 dark:text-sky-400' : '',
                       ].join(' ')
@@ -55,11 +65,19 @@ export default function Header() {
                   >
                     {({ isActive }) => (
                       <>
-                        <span>{item.label}</span>
+                        <Icon
+                          className={[
+                            'h-4 w-4 transition-all',
+                            'group-hover:-translate-y-0.5 group-active:translate-y-0',
+                            isActive ? 'stroke-sky-500 dark:stroke-sky-400' : '',
+                          ].join(' ')}
+                          aria-hidden="true"
+                        />
+                        <span>{label}</span>
                         <span
                           className={[
-                            'pointer-events-none absolute inset-x-2 bottom-1 h-[2px] rounded-full bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-sky-500 transition-all',
-                            isActive ? 'opacity-100' : 'opacity-0',
+                            'pointer-events-none absolute inset-x-2 bottom-1 h-[2px] rounded-full bg-gradient-to-r from-fuchsia-500 via-cyan-400 to-sky-500 transition-opacity',
+                            isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-60',
                           ].join(' ')}
                         />
                       </>

@@ -8,7 +8,7 @@ export default function FavoritesPage() {
   const nav = useNavigate()
 
   return (
-    <div className="p-6">
+    <div className="p-6 w-full">
       <Typography.Title level={2} style={{ color: '#fff' }}>Favorites</Typography.Title>
 
       <Typography.Title level={4} style={{ color: '#fff' }}>Coins</Typography.Title>
