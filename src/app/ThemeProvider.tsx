@@ -3,7 +3,8 @@ import { ConfigProvider, theme as antdTheme } from 'antd'
 import { useAppStore } from '../store/useAppStore'
 
 export default function ThemeProvider({ children }: PropsWithChildren) {
-  const mode = useAppStore(s => s.theme)
+  const rawMode = useAppStore(s => s.theme)
+  const mode = rawMode ?? 'light'
 
   const algorithms = useMemo(
     () => (mode === 'dark' ? [antdTheme.darkAlgorithm] : [antdTheme.defaultAlgorithm]),
