@@ -3,16 +3,16 @@ import { Button } from 'antd'
 import { useAppStore } from '../store/useAppStore'
 import ThemeToggle from './ThemeToggle'
 import { motion } from 'framer-motion'
-import { Coins, Newspaper, Diamond, Star, Calculator as CalculatorIcon } from 'lucide-react'
+import { Home, Bitcoin, Newspaper, Gem, Star, Calculator, LineChart } from 'lucide-react'
 
 const nav = [
-  { to: '/', label: 'Home', Icon: CalculatorIcon },
-  { to: '/cryptos', label: 'Cryptos', Icon: Coins },
-  { to: '/news', label: 'News', Icon: Newspaper },
-  { to: '/nfts', label: 'NFTs', Icon: Diamond },
-  { to: '/favorites', label: 'Favorites', Icon: Star },
-  { to: '/calculator', label: 'PNL', Icon: CalculatorIcon },
-  { to: '/Simulator', label: 'Investment', Icon: CalculatorIcon },
+  { to: '/', label: 'Главная', Icon: Home, hint: 'Пульс проекта' },
+  { to: '/cryptos', label: 'Крипта', Icon: Bitcoin, hint: 'Монеты, цены, графики' },
+  { to: '/news', label: 'Новости', Icon: Newspaper, hint: 'Свежие заголовки рынка' },
+  { to: '/nfts', label: 'NFT-маркет', Icon: Gem, hint: 'Токены и коллекции' },
+  { to: '/favorites', label: 'Избранное', Icon: Star, hint: 'Ваши отслеживаемые' },
+  { to: '/calculator', label: 'П/У (P&L)', Icon: Calculator, hint: 'Калькулятор прибыли/убытка' },
+  { to: '/Simulator', label: 'Симулятор', Icon: LineChart, hint: 'Тренируй сделки без риска' },
 ]
 
 export default function Header() {
@@ -34,13 +34,14 @@ export default function Header() {
               to="/"
               className="select-none rounded-md px-2 text-lg font-semibold tracking-tight text-slate-900 dark:text-white"
             >
-              CryptoPulse
+              МонетаРадар
             </NavLink>
             <nav className="hidden items-center gap-2 md:flex">
-              {nav.map(({ to, label, Icon }) => (
+              {nav.map(({ to, label, Icon, hint }) => (
                 <NavLink
                   key={to}
                   to={to}
+                  title={hint}
                   className={({ isActive }) =>
                     [
                       'group relative flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
@@ -79,9 +80,9 @@ export default function Header() {
                 <div className="grid h-6 w-6 place-items-center rounded-full bg-slate-900 text-[10px] font-bold text-white dark:bg-white dark:text-slate-900">
                   {username.slice(0, 2).toUpperCase()}
                 </div>
-                <span className="text-xs text-slate-800 dark:text-slate-300">Hi, {username}</span>
+                <span className="text-xs text-slate-800 dark:text-slate-300">Привет, {username}</span>
               </div>
-              <Button onClick={() => { logout(); go('/login') }}>Logout</Button>
+              <Button onClick={() => { logout(); go('/login') }}>Выйти</Button>
             </div>
           </div>
         </div>
