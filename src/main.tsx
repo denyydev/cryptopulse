@@ -1,15 +1,89 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import 'antd/dist/reset.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import {
+  RouterProvider,
+  createBrowserRouter,
+  redirect,
+  Outlet,
+} from 'react-router-dom';
+import 'antd/dist/reset.css' 
 import './styles/global.css'
+import ThemeProvider from './app/ThemeProvider';
+import Header from './components/Header';
+import { isAuthenticated } from './hooks/useAuth';
 
-import ThemeProvider from './app/ThemeProvider'
+export const AuthedLayout: React.FC = () => (
+  <>
+    <Header />
+    <div className="min-h-screen overflow-x-clip">
+      <React.Suspense fallback={<div className="p-6">Loading...</div>}>
+        <Outlet />
+      </React.Suspense>
+    </div>
+  </>
+);
+
+export const PublicLayout: React.FC = () => (
+  <div className="min-h-screen overflow-x-clip">
+    <React.Suspense fallback={<div className="p-6">Loading...</div>}>
+      <Outlet />
+    </React.Suspense>
+  </div>
+);
+
+
+const requireAuth = () => {
+  if (!isAuthenticated()) throw redirect('/login');
+  return null;
+};
+
+
+const HomePage = React.lazy(() => import('./pages/HomaPage'));
+const CryptocurrenciesPage = React.lazy(() => import('./pages/CryptocurrenciesPage'));
+const NewsPage = React.lazy(() => import('./pages/NewsPage'));
+const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const NFTsPage = React.lazy(() => import('./pages/NFTsPage'));
+const CoinDetailsPage = React.lazy(() => import('./pages/CoinDetailsPage'));
+const FavoritesPage = React.lazy(() => import('./pages/FavoritesPage'));
+
+
+const router = createBrowserRouter([
+
+  {
+    element: <AuthedLayout />,
+    loader: requireAuth,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'cryptos', element: <CryptocurrenciesPage /> },
+      { path: 'news', element: <NewsPage /> },
+      { path: 'nfts', element: <NFTsPage /> },
+      { path: 'favorites', element: <FavoritesPage /> },
+      { path: 'coin/:id', element: <CoinDetailsPage /> },
+    ],
+  },
+
+  {
+    path: '/login',
+    element: <PublicLayout />,
+    children: [{ index: true, element: <LoginPage /> }],
+  },
+
+  {
+    path: '*',
+    element: <PublicLayout />,
+    children: [
+      {
+        index: true,
+        element: <div className="p-6 text-center">Page not found</div>,
+      },
+    ],
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <App />
+      <RouterProvider router={router} />
     </ThemeProvider>
   </React.StrictMode>
-)
+);

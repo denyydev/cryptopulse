@@ -32,7 +32,7 @@ export default function HomePage() {
     )
 
   return (
-    <div className="relative">
+    <div className="relative flex justify-center">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-24 -right-16 h-[420px] w-[420px] rounded-full bg-fuchsia-500/15 blur-3xl" />
         <div className="absolute top-28 -left-20 h-[520px] w-[520px] rounded-full bg-cyan-400/15 blur-3xl" />
