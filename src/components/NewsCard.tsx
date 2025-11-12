@@ -9,41 +9,40 @@ export default function NewsCard({ item }: Props) {
     <a href={item.url} target="_blank" rel="noreferrer">
       <Card
         hoverable
-        className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(124,58,237,0.35)]"
+        className="group relative overflow-hidden rounded-xl border border-black/10 bg-white transition-all duration-200 hover:shadow-md dark:border-white/10 dark:bg-[#0e141f]"
         cover={
           item.image_url ? (
             <div className="relative h-48 w-full overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
               <img
                 src={item.image_url}
                 alt={item.title}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
               />
-              <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-fuchsia-500/10 via-cyan-400/10 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
             </div>
           ) : undefined
         }
       >
-        <div className="mb-3 flex items-center justify-between">
-          <span className="text-xs text-slate-400">{trimUrl(item.url)}</span>
-          <span className="text-xs text-slate-500">{timeAgo(item.published_at)}</span>
+        <div className="mb-2 flex items-center justify-between">
+          <span className="text-xs text-slate-500 dark:text-slate-400">{trimUrl(item.url)}</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400">{timeAgo(item.published_at)}</span>
         </div>
 
         <Typography.Title
           level={5}
-          className="mb-3 text-white transition-colors duration-300 group-hover:text-fuchsia-400"
+          className="mb-3 !m-0 text-slate-900 transition-colors duration-150 group-hover:text-[var(--primary,theme(colors.blue.600))] dark:text-slate-100"
         >
           {item.title}
         </Typography.Title>
 
-        <div className="mt-auto flex flex-wrap gap-2">
-          <Tag className="rounded-full border-none bg-fuchsia-500/20 text-fuchsia-300 backdrop-blur">
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Tag className="m-0 rounded-full border border-black/10 bg-white text-slate-700 dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
             {item.source}
           </Tag>
           {item.currencies?.slice(0, 3).map((c) => (
             <Tag
               key={c}
-              className="rounded-full border-none bg-white/10 text-slate-300 backdrop-blur"
+              className="m-0 rounded-full border border-black/10 bg-white text-slate-700 dark:border-white/10 dark:bg-white/10 dark:text-slate-200"
             >
               {c}
             </Tag>

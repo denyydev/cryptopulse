@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAppStore } from "../store/useAppStore";
 
 const axiosInstance = axios.create({
-  baseURL: "/cg",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "/cg",
   timeout: 15000,
 });
 
@@ -25,6 +25,9 @@ axiosInstance.interceptors.response.use(
         await new Promise((r) => setTimeout(r, delay));
         return axiosInstance(config);
       }
+    }
+    if (err.code === "ERR_NETWORK" || err.message?.includes("CORS")) {
+      throw new Error("network");
     }
     return Promise.reject(err);
   }

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap&subset=cyrillic');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,4 +19,63 @@
     background: var(--bg);
     color: var(--text);
   }
+}
+
+
+
+:root.light {
+  --sb-thumb: rgba(100,116,139,0.6);
+  --sb-thumb-hover: rgba(71,85,105,0.8);
+  --sb-track: rgba(0,0,0,0.06);
+}
+
+:root.dark {
+  --sb-thumb: rgba(148,163,184,0.55);
+  --sb-thumb-hover: rgba(203,213,225,0.7);
+  --sb-track: rgba(255,255,255,0.06);
+}
+
+
+html, body, main, .thin-scroll {
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;                
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+main::-webkit-scrollbar,
+.thin-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+main::-webkit-scrollbar-track,
+.thin-scroll::-webkit-scrollbar-track {
+  background: var(--sb-track);
+  border-radius: 999px;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+main::-webkit-scrollbar-thumb,
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+html:hover::-webkit-scrollbar-thumb,
+body:hover::-webkit-scrollbar-thumb,
+main:hover::-webkit-scrollbar-thumb,
+.thin-scroll:hover::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-hover);
+  border: 2px solid transparent;
+}
+
+.thin-scroll {
+  overflow: auto;
 }

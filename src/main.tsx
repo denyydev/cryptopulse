@@ -14,15 +14,17 @@ import { isAuthenticated } from './hooks/useAuth';
 
 
 export const AuthedLayout: React.FC = () => (
-  <>
+  <div className="grid h-dvh grid-rows-[auto,1fr] overflow-hidden">
     <Header />
-    <div className="min-h-screen overflow-x-clip max-w-[1440px] flex mx-auto">
-      <React.Suspense fallback={<div className="p-6">Loading...</div>}>
-        <Outlet />
-      </React.Suspense>
-    </div>
-  </>
-);
+    <main className="overflow-y-auto overscroll-contain">
+      <div className="mx-auto flex w-full max-w-[1440px]">
+        <React.Suspense fallback={<div className="p-6">Loading...</div>}>
+          <Outlet />
+        </React.Suspense>
+      </div>
+    </main>
+  </div>
+)
 
 export const PublicLayout: React.FC = () => (
   <div className="min-h-screen overflow-x-clip">

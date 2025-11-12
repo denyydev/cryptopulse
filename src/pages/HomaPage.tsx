@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Typography, Spin, Empty } from 'antd'
+import { Typography, Spin, Empty, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { getCoins } from '../api/coinApi'
@@ -26,46 +26,45 @@ export default function HomePage() {
 
   if (loading)
     return (
-      <div className="p-6 grid place-items-center">
+      <div className="grid place-items-center p-10">
         <Spin size="large" />
       </div>
     )
 
   return (
     <div className="w-full">
-
-      <section className="container py-10">
-        <div className="mb-8 flex items-center justify-between">
+      <section className="mx-auto w-full max-w-[1440px] px-4 py-8">
+        <div className="mb-6 flex items-center justify-between">
           <motion.h1
-            className="text-3xl md:text-4xl font-extrabold tracking-tight text-white"
+            className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl"
             initial={{ y: 8, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+            transition={{ type: 'tween', duration: 0.2 }}
           >
             Overview
           </motion.h1>
 
-          <motion.button
-            onClick={() => nav('/cryptos')}
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white ring-1 ring-white/15 backdrop-blur hover:bg-white/15 transition"
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Explore Markets
-          </motion.button>
+          <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="hidden md:block">
+            <Button onClick={() => nav('/cryptos')} size="middle">
+              Explore Markets
+            </Button>
+          </motion.div>
         </div>
 
         <motion.div
-          className="mb-12 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur"
+          className="mb-10 rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#0e141f]"
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.05 }}
+          transition={{ type: 'tween', duration: 0.2, delay: 0.05 }}
         >
-          <div className="mb-6 flex items-center justify-between">
-            <Typography.Title level={3} className="!m-0 !text-white">
+          <div className="mb-5 flex items-center justify-between">
+            <Typography.Title level={3} className="!m-0 text-slate-900 dark:!text-slate-100">
               Top Coins
             </Typography.Title>
-            <button onClick={() => nav('/cryptos')} className="text-sky-400 hover:underline">
+            <button
+              onClick={() => nav('/cryptos')}
+              className="text-sm text-slate-700 underline-offset-4 hover:underline dark:text-slate-300"
+            >
               View all
             </button>
           </div>
@@ -74,19 +73,13 @@ export default function HomePage() {
             <Empty description="No coins" />
           ) : (
             <motion.div
-              className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
+              className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
               initial="hidden"
               animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.05 } },
-              }}
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
             >
-              {coins.map((c) => (
-                <motion.div
-                  key={c.id}
-                  variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
-                >
+              {coins.map(c => (
+                <motion.div key={c.id} variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
                   <CoinMiniCard
                     name={c.name}
                     image={c.image}
@@ -100,16 +93,19 @@ export default function HomePage() {
         </motion.div>
 
         <motion.div
-          className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur"
+          className="rounded-xl border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#0e141f]"
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.1 }}
+          transition={{ type: 'tween', duration: 0.2, delay: 0.08 }}
         >
-          <div className="mb-6 flex items-center justify-between">
-            <Typography.Title level={3} className="!m-0 !text-white">
+          <div className="mb-5 flex items-center justify-between">
+            <Typography.Title level={3} className="!m-0 text-slate-900 dark:!text-slate-100">
               Latest News
             </Typography.Title>
-            <button onClick={() => nav('/news')} className="text-sky-400 hover:underline">
+            <button
+              onClick={() => nav('/news')}
+              className="text-sm text-slate-700 underline-offset-4 hover:underline dark:text-slate-300"
+            >
               View all
             </button>
           </div>
@@ -118,19 +114,13 @@ export default function HomePage() {
             <Empty description="No news" />
           ) : (
             <motion.div
-              className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+              className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
               initial="hidden"
               animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.06 } },
-              }}
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
             >
-              {news.map((n) => (
-                <motion.div
-                  key={n.id}
-                  variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
-                >
+              {news.map(n => (
+                <motion.div key={n.id} variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
                   <NewsCard item={n} />
                 </motion.div>
               ))}
