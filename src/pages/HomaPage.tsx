@@ -6,6 +6,7 @@ import { getCoins } from '../api/coinApi'
 import { getCryptoNews, type NewsItem } from '../api/newsApi'
 import CoinMiniCard from '../components/CoinMiniCard'
 import NewsCard from '../components/NewsCard'
+import { LayoutDashboard, Coins as CoinsIcon, Newspaper as NewspaperIcon } from 'lucide-react'
 
 type CoinRow = { id: string; name: string; image: string; current_price?: number }
 
@@ -35,18 +36,26 @@ export default function HomePage() {
     <div className="w-full">
       <section className="mx-auto w-full max-w-[1440px] px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
-          <motion.h1
-            className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl"
+          <motion.div
+            className="flex flex-col gap-1"
             initial={{ y: 8, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ type: 'tween', duration: 0.2 }}
           >
-            Overview
-          </motion.h1>
+            <div className="flex items-center gap-2">
+              <LayoutDashboard className="h-6 w-6 text-slate-700 dark:text-slate-200" aria-hidden="true" />
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl">
+                Обзор
+              </h1>
+            </div>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Коротко о рынке: самое важное одним взглядом
+            </p>
+          </motion.div>
 
           <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="hidden md:block">
             <Button onClick={() => nav('/cryptos')} size="middle">
-              Explore Markets
+              Открыть рынки
             </Button>
           </motion.div>
         </div>
@@ -58,19 +67,27 @@ export default function HomePage() {
           transition={{ type: 'tween', duration: 0.2, delay: 0.05 }}
         >
           <div className="mb-5 flex items-center justify-between">
-            <Typography.Title level={3} className="!m-0 text-slate-900 dark:!text-slate-100">
-              Top Coins
-            </Typography.Title>
+            <div>
+              <div className="flex items-center gap-2">
+                <CoinsIcon className="h-5 w-5 text-slate-700 dark:text-slate-200" aria-hidden="true" />
+                <Typography.Title level={3} className="!m-0 text-slate-900 dark:!text-slate-100">
+                  Топ монеты
+                </Typography.Title>
+              </div>
+              <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                Лидеры по капитализации и вниманию
+              </div>
+            </div>
             <button
               onClick={() => nav('/cryptos')}
               className="text-sm text-slate-700 underline-offset-4 hover:underline dark:text-slate-300"
             >
-              View all
+              Смотреть все
             </button>
           </div>
 
           {coins.length === 0 ? (
-            <Empty description="No coins" />
+            <Empty description="Монет нет" />
           ) : (
             <motion.div
               className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
@@ -99,19 +116,27 @@ export default function HomePage() {
           transition={{ type: 'tween', duration: 0.2, delay: 0.08 }}
         >
           <div className="mb-5 flex items-center justify-between">
-            <Typography.Title level={3} className="!m-0 text-slate-900 dark:!text-slate-100">
-              Latest News
-            </Typography.Title>
+            <div>
+              <div className="flex items-center gap-2">
+                <NewspaperIcon className="h-5 w-5 text-slate-700 dark:text-slate-200" aria-hidden="true" />
+                <Typography.Title level={3} className="!m-0 text-slate-900 dark:!text-slate-100">
+                  Свежие новости
+                </Typography.Title>
+              </div>
+              <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                Главное из криптомира — без лишнего шума
+              </div>
+            </div>
             <button
               onClick={() => nav('/news')}
               className="text-sm text-slate-700 underline-offset-4 hover:underline dark:text-slate-300"
             >
-              View all
+              Смотреть все
             </button>
           </div>
 
           {news.length === 0 ? (
-            <Empty description="No news" />
+            <Empty description="Новостей нет" />
           ) : (
             <motion.div
               className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
