@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { Button } from 'antd'
+import { Button, Popconfirm, message } from 'antd'
 import { useAppStore } from '../store/useAppStore'
 import ThemeToggle from './ThemeToggle'
 import { motion } from 'framer-motion'
@@ -19,6 +19,12 @@ export default function Header() {
   const go = useNavigate()
   const username = useAppStore(s => s.username) ?? 'guest'
   const logout = useAppStore(s => s.logout)
+
+  const handleLogout = () => {
+    logout()
+    message.success('Вы вышли из аккаунта')
+    go('/login')
+  }
 
   return (
     <header className="w-full border-b border-black/10 bg-white dark:border-white/10 dark:bg-[#0b0f17]">
@@ -82,7 +88,16 @@ export default function Header() {
                 </div>
                 <span className="text-xs text-slate-800 dark:text-slate-300">Привет, {username}</span>
               </div>
-              <Button onClick={() => { logout(); go('/login') }}>Выйти</Button>
+              <Popconfirm
+                title="Выйти из аккаунта?"
+                description="Придётся войти снова :("
+                okText="Да, выйти"
+                cancelText="Отмена"
+                placement="bottomRight"
+                onConfirm={handleLogout}
+              >
+                <Button>Выйти</Button>
+              </Popconfirm>
             </div>
           </div>
         </div>

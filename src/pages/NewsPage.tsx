@@ -61,13 +61,12 @@ export default function NewsPage() {
     return arr
   }, [items, period, source, query, order])
 
-  if (loading) {
-    return (
-      <div className="grid place-items-center p-10">
-        <Spin size="large" />
-      </div>
-    )
-  }
+if (loading)
+  return (
+    <div className="grid min-h-[50vh] w-full place-items-center py-16">
+      <Spin size="large" />
+    </div>
+  )
 
   return (
     <div className="w-full">
