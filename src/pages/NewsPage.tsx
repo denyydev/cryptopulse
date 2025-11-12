@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getCryptoNews, type NewsItem } from '../api/newsApi'
 import NewsCard from '../components/NewsCard'
-import { Typography, Spin, Empty, Input, Select, Segmented, Tag } from 'antd'
+import { Typography, Spin, Empty, Tag } from 'antd'
 import { motion } from 'framer-motion'
-import { Newspaper, Filter, CalendarClock, Sparkles } from 'lucide-react'
+import { Newspaper, Sparkles } from 'lucide-react'
 
 type Period = 'all' | '24h' | '7d'
 type SortOrder = 'newest' | 'oldest'
+type NewsItemEx = NewsItem & { description?: string; publishedAt?: string; date?: string; source?: string }
 
 function withinPeriod(dateISO: string | undefined, period: Period) {
-  if (!dateISO) return true
-  if (period === 'all') return true
+  if (!dateISO || period === 'all') return true
   const now = Date.now()
   const t = new Date(dateISO).getTime()
   if (Number.isNaN(t)) return true
@@ -20,53 +20,54 @@ function withinPeriod(dateISO: string | undefined, period: Period) {
   return true
 }
 
+const getDateStr = (n: NewsItemEx) => n.publishedAt ?? n.date
+const getSource = (n: NewsItemEx) => n.source ?? ''
+const getDesc = (n: NewsItemEx) => n.description ?? ''
+
 export default function NewsPage() {
-  const [items, setItems] = useState<NewsItem[]>([])
+  const [items, setItems] = useState<NewsItemEx[]>([])
   const [loading, setLoading] = useState(true)
-  const [query, setQuery] = useState('')
-  const [period, setPeriod] = useState<Period>('all')
-  const [source, setSource] = useState<string | 'all'>('all')
-  const [order, setOrder] = useState<SortOrder>('newest')
+
+
+  const [query] = useState('')
+  const [period] = useState<Period>('all')
+  const [source] = useState<string | 'all'>('all')
+  const [order] = useState<SortOrder>('newest')
 
   useEffect(() => {
     setLoading(true)
     getCryptoNews(12)
-      .then(res => setItems(res))
+      .then(res => setItems(res as unknown as NewsItemEx[]))
       .finally(() => setLoading(false))
   }, [])
 
-  const sources = useMemo(() => {
-    const s = Array.from(new Set(items.map(i => i.source).filter(Boolean))) as string[]
-    return s.sort((a, b) => a.localeCompare(b))
-  }, [items])
+
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     const arr = items
-      .filter(n => withinPeriod((n as any).publishedAt ?? (n as any).date, period))
-      .filter(n => (source === 'all' ? true : n.source === source))
+      .filter(n => withinPeriod(getDateStr(n), period))
+      .filter(n => (source === 'all' ? true : getSource(n) === source))
       .filter(n =>
         !q
           ? true
-          : [n.title, n.description, n.source]
-              .filter(Boolean)
-              .some(v => String(v).toLowerCase().includes(q)),
+          : [n.title, getDesc(n), getSource(n)].filter(Boolean).some(v => String(v).toLowerCase().includes(q)),
       )
       .slice()
       .sort((a, b) => {
-        const da = new Date((a as any).publishedAt ?? (a as any).date).getTime()
-        const db = new Date((b as any).publishedAt ?? (b as any).date).getTime()
+        const da = new Date(getDateStr(a) ?? '').getTime()
+        const db = new Date(getDateStr(b) ?? '').getTime()
         return order === 'newest' ? db - da : da - db
       })
     return arr
   }, [items, period, source, query, order])
 
-if (loading)
-  return (
-    <div className="grid min-h-[50vh] w-full place-items-center py-16">
-      <Spin size="large" />
-    </div>
-  )
+  if (loading)
+    return (
+      <div className="grid min-h-[50vh] w-full place-items-center py-16">
+        <Spin size="large" />
+      </div>
+    )
 
   return (
     <div className="w-full">
@@ -81,13 +82,11 @@ if (loading)
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
                 <Newspaper className="h-6 w-6 text-slate-700 dark:text-slate-200" />
-                <Typography.Title level={2} className="!m-0 text-slate-900 dark:text-slate-100">
+                <Typography.Title level={2} className="!m-0 text-slate-900 dark:!text-slate-100">
                   Новости
                 </Typography.Title>
               </div>
-              <p className="text-sm text-slate-600 dark:text-slate-300">
-                Самое важное из криптомира — коротко и по делу
-              </p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">Самое важное из криптомира — коротко и по делу</p>
             </div>
             <Tag className="m-0 rounded-full border border-black/10 bg-white px-3 py-2 text-slate-700 dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
               <Sparkles className="mr-2 inline-block h-4 w-4" />

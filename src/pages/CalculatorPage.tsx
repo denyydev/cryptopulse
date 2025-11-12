@@ -15,6 +15,8 @@ type Inputs = {
 const nfUSD = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 })
 const nfUSD0 = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })
 
+const parseNumber = (v?: string) => (v ? Number(v.replace(/[^\d.-]/g, '')) : 0)
+
 function calcPnL({ buyPrice, sellPrice, amount, feePct }: Inputs) {
   const fee = feePct / 100
   const cost = buyPrice * amount
@@ -96,12 +98,12 @@ export default function CalculatorPage() {
                 label={<span className="inline-flex items-center gap-2"><CircleDollarSign className="h-4 w-4" />Цена покупки</span>}
                 rules={[{ required: true }]}
               >
-                <InputNumber
+                <InputNumber<number>
                   min={0}
                   step={1}
                   className="w-full"
                   formatter={v => (v === undefined ? '' : nfUSD.format(Number(v)))}
-                  parser={v => (v ? v.replace(/[^\d.]/g, '') : '') as unknown as number}
+                  parser={parseNumber}
                 />
               </Form.Item>
 
@@ -109,13 +111,13 @@ export default function CalculatorPage() {
                 name="sellPrice"
                 label={<span className="inline-flex items-center gap-2"><TrendingUp className="h-4 w-4" />Цена продажи</span>}
               >
-                <InputNumber
+                <InputNumber<number>
                   min={0}
                   step={1}
                   className="w-full"
                   placeholder="Опционально"
                   formatter={v => (v === undefined ? '' : nfUSD.format(Number(v)))}
-                  parser={v => (v ? v.replace(/[^\d.]/g, '') : '') as unknown as number}
+                  parser={parseNumber}
                 />
               </Form.Item>
 
@@ -124,7 +126,7 @@ export default function CalculatorPage() {
                 label="Количество"
                 rules={[{ required: true }]}
               >
-                <InputNumber min={0} step={0.0001} className="w-full" />
+                <InputNumber<number> min={0} step={0.0001} className="w-full" />
               </Form.Item>
 
               <div className="mb-2 flex items-center justify-between">
@@ -150,12 +152,12 @@ export default function CalculatorPage() {
                 label={<span className="inline-flex items-center gap-2"><Percent className="h-4 w-4" />Комиссия (%)</span>}
                 rules={[{ required: true }]}
               >
-                <InputNumber
+                <InputNumber<number>
                   min={0}
                   step={0.01}
                   className="w-full"
                   formatter={v => (v === undefined ? '' : `${v}%`)}
-                  parser={v => (v ? v.replace(/[^\d.]/g, '') : '') as unknown as number}
+                  parser={parseNumber}
                 />
               </Form.Item>
 

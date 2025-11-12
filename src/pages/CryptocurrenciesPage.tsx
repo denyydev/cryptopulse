@@ -23,7 +23,7 @@ type Coin = {
 }
 
 const nfUSD = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 6 })
-const nfInt = new Intl.NumberFormat('en-US')
+
 
 function pct(p?: number) {
   if (p === null || p === undefined) return '—'
