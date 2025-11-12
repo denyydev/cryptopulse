@@ -5,7 +5,7 @@ import type { ColumnsType } from 'antd/es/table'
 import { useNavigate } from 'react-router-dom'
 import CoinFavButton from '../components/CoinFavButton'
 import { motion } from 'framer-motion'
-import { ArrowDownRight, ArrowUpRight, Info, Sparkles } from 'lucide-react'
+import { ArrowDownRight, ArrowUpRight, Info, Sparkles, Coins, LineChart, CircleDollarSign } from 'lucide-react'
 
 type Coin = {
   id: string
@@ -28,7 +28,8 @@ const nfInt = new Intl.NumberFormat('en-US')
 function pct(p?: number) {
   if (p === null || p === undefined) return '—'
   const fixed = Math.abs(p) < 1 ? p.toFixed(2) : p.toFixed(2)
-  return `${fixed}%`
+  const sign = p > 0 ? '+' : ''
+  return `${sign}${fixed}%`
 }
 
 function TrendPill({ value }: { value?: number }) {
@@ -48,12 +49,9 @@ function TrendPill({ value }: { value?: number }) {
 }
 
 function Sparkline({ points }: { points?: number[] }) {
-  if (!points || points.length === 0) return <span className="text-xs opacity-60">no data</span>
-  const width = 110,
-    height = 34,
-    padding = 2
-  const min = Math.min(...points),
-    max = Math.max(...points)
+  if (!points || points.length === 0) return <span className="text-xs opacity-60">нет данных</span>
+  const width = 110, height = 34, padding = 2
+  const min = Math.min(...points), max = Math.max(...points)
   const span = Math.max(max - min, 1e-9)
   const stepX = (width - padding * 2) / (points.length - 1)
   const toX = (i: number) => padding + i * stepX
@@ -67,11 +65,22 @@ function Sparkline({ points }: { points?: number[] }) {
   )
 }
 
+const ORDER_OPTIONS = [
+  { value: 'market_cap_desc', label: 'Капитализация ↓' },
+  { value: 'market_cap_asc', label: 'Капитализация ↑' },
+  { value: 'volume_desc', label: 'Объём ↓' },
+  { value: 'volume_asc', label: 'Объём ↑' },
+  { value: 'price_desc', label: 'Цена ↓' },
+  { value: 'price_asc', label: 'Цена ↑' },
+] as const
+
+type OrderValue = typeof ORDER_OPTIONS[number]['value']
+
 export default function CryptocurrenciesPage() {
   const [data, setData] = useState<Coin[]>([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
-  const [order, setOrder] = useState<'market_cap_desc' | 'market_cap_asc' | 'volume_desc' | 'volume_asc' | 'price_desc' | 'price_asc'>('market_cap_desc')
+  const [order, setOrder] = useState<OrderValue>('market_cap_desc')
   const [limit, setLimit] = useState<20 | 50 | 100>(20)
   const [moveFilter, setMoveFilter] = useState<'all' | 'gainers' | 'losers'>('all')
   const nav = useNavigate()
@@ -103,6 +112,8 @@ export default function CryptocurrenciesPage() {
     })
   }, [data, query, moveFilter])
 
+  const orderLabel = useMemo(() => ORDER_OPTIONS.find(o => o.value === order)?.label ?? order, [order])
+
   const columns: ColumnsType<Coin> = [
     {
       title: '',
@@ -119,7 +130,7 @@ export default function CryptocurrenciesPage() {
       render: v => <span className="text-slate-500 dark:text-slate-400">#{v}</span>,
     },
     {
-      title: 'Coin',
+      title: 'Монета',
       dataIndex: 'name',
       width: 260,
       sorter: (a, b) => a.name.localeCompare(b.name),
@@ -134,7 +145,12 @@ export default function CryptocurrenciesPage() {
       ),
     },
     {
-      title: 'Price',
+      title: (
+        <Space size={6}>
+          <CircleDollarSign className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+          <span>Цена</span>
+        </Space>
+      ),
       dataIndex: 'current_price',
       align: 'right',
       sorter: (a, b) => a.current_price - b.current_price,
@@ -143,7 +159,7 @@ export default function CryptocurrenciesPage() {
     {
       title: () => (
         <Space size={6}>
-          <span>24h</span>
+          <span>24ч</span>
           <Tooltip title="Изменение цены за 24 часа">
             <Info className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
           </Tooltip>
@@ -156,7 +172,7 @@ export default function CryptocurrenciesPage() {
       render: (v: number) => <TrendPill value={v} />,
     },
     {
-      title: '7d',
+      title: '7д',
       dataIndex: 'price_change_percentage_7d_in_currency',
       width: 110,
       align: 'right',
@@ -164,21 +180,26 @@ export default function CryptocurrenciesPage() {
       render: (v: number) => <TrendPill value={v} />,
     },
     {
-      title: 'Market Cap',
+      title: 'Капитализация',
       dataIndex: 'market_cap',
       align: 'right',
       sorter: (a, b) => a.market_cap - b.market_cap,
       render: (v: number) => <span className="text-slate-900 dark:text-slate-100">{nfUSD.format(v)}</span>,
     },
     {
-      title: 'Volume 24h',
+      title: 'Объём 24ч',
       dataIndex: 'total_volume',
       align: 'right',
       sorter: (a, b) => a.total_volume - b.total_volume,
       render: (v: number) => <span className="text-slate-900 dark:text-slate-100">{nfUSD.format(v)}</span>,
     },
     {
-      title: '7d Spark',
+      title: (
+        <Space size={6}>
+          <LineChart className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+          <span>График 7д</span>
+        </Space>
+      ),
       dataIndex: 'sparkline_in_7d',
       width: 140,
       render: (_: any, r: Coin) => <Sparkline points={r.sparkline_in_7d?.price} />,
@@ -196,41 +217,46 @@ export default function CryptocurrenciesPage() {
         >
           <div className="rounded-2xl border border-black/10 bg-white p-5 dark:border-white/10 dark:bg-[#0e141f]">
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <Typography.Title level={2} className="!m-0 text-slate-900 dark:text-slate-100">
-                  Cryptocurrencies
-                </Typography.Title>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  Живые цены, изменения, капитализация и объёмы. Обновляется на лету.
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <Coins className="h-6 w-6 text-slate-700 dark:text-slate-200" />
+                  <Typography.Title level={2} className="!m-0 text-slate-900 dark:text-slate-100">
+                    Криптовалюты
+                  </Typography.Title>
+                </div>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  Живые котировки, тренды и обороты — всё под рукой
                 </p>
               </div>
               <Tag className="m-0 rounded-full border border-black/10 bg-white px-3 py-2 text-slate-700 dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
                 <Sparkles className="mr-2 inline-block h-4 w-4" />
-                Top {limit} • {order.replace(/_/g, ' ')}
+                Топ {limit} • {orderLabel}
               </Tag>
             </div>
 
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <Input.Search allowClear placeholder="Поиск по имени или тикеру…" onChange={e => setQuery(e.target.value)} className="w-full sm:w-72" />
-              <Select
+              <Input.Search
+                allowClear
+                placeholder="Поиск по имени или тикеру…"
+                onChange={e => setQuery(e.target.value)}
+                className="w-full sm:w-72"
+              />
+              <Select<OrderValue>
                 value={order}
                 onChange={v => setOrder(v)}
                 className="w-full sm:w-60"
-                options={[
-                  { value: 'market_cap_desc', label: 'Market Cap ↓' },
-                  { value: 'market_cap_asc', label: 'Market Cap ↑' },
-                  { value: 'volume_desc', label: 'Volume ↓' },
-                  { value: 'volume_asc', label: 'Volume ↑' },
-                  { value: 'price_desc', label: 'Price ↓' },
-                  { value: 'price_asc', label: 'Price ↑' },
-                ]}
+                options={ORDER_OPTIONS as any}
               />
-              <Segmented options={[{ label: 'Top 20', value: 20 }, { label: 'Top 50', value: 50 }, { label: 'Top 100', value: 100 }]} value={limit} onChange={v => setLimit(v as 20 | 50 | 100)} />
+              <Segmented
+                options={[{ label: 'Топ 20', value: 20 }, { label: 'Топ 50', value: 50 }, { label: 'Топ 100', value: 100 }]}
+                value={limit}
+                onChange={v => setLimit(v as 20 | 50 | 100)}
+              />
               <Segmented
                 options={[
-                  { label: 'All', value: 'all' },
-                  { label: 'Gainers', value: 'gainers' },
-                  { label: 'Losers', value: 'losers' },
+                  { label: 'Все', value: 'all' },
+                  { label: 'Рост', value: 'gainers' },
+                  { label: 'Падение', value: 'losers' },
                 ]}
                 value={moveFilter}
                 onChange={v => setMoveFilter(v as 'all' | 'gainers' | 'losers')}
