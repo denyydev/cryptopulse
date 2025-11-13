@@ -4,6 +4,7 @@ import { useAppStore } from '../store/useAppStore'
 import ThemeToggle from './ThemeToggle'
 import { motion } from 'framer-motion'
 import { Home, Bitcoin, Newspaper, Gem, Star, Calculator, LineChart } from 'lucide-react'
+import MobileBottomNav from './MobileBottomNav'
 
 const nav = [
   { to: '/', label: 'Главная', Icon: Home, hint: 'Пульс проекта' },
@@ -102,6 +103,7 @@ export default function Header() {
           </div>
         </div>
       </motion.div>
+      <MobileBottomNav />
     </header>
   )
 }
