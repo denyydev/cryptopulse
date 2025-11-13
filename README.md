@@ -1,3 +1,7 @@
+![preview](<img width="1460" height="915" alt="image" src="https://github.com/user-attachments/assets/0c064575-5241-4c92-831c-7b553ea018ac" />
+)
+
+
 ##  Tech Stack
 
 | Category | Technologies |
