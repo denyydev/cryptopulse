@@ -1,5 +1,6 @@
-![preview](<img width="1460" height="915" alt="image" src="https://github.com/user-attachments/assets/0c064575-5241-4c92-831c-7b553ea018ac" />
-)
+<img width="1460" height="915" alt="image" src="https://github.com/user-attachments/assets/a1254ea3-53c4-4f11-b338-ad7883304396" />
+
+
 
 
 ##  Tech Stack
